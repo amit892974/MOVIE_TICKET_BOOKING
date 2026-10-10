@@ -1,95 +1,133 @@
-# 🎬 BookMyScreen Movie Booking System Tutorial (MERN Stack)
+# 🎬 BookMyScreen — Movie Ticket Booking System
 
-Welcome to the **BookMyScreen** tutorial series – your ultimate guide to building a **full-stack movie ticket booking system** using **React**, **Node.js**, **MongoDB**, and **Express.js**.
+A full-stack movie ticket booking application built using the MERN stack, with Redis for temporary seat locking and concurrency management.
 
-This system includes advanced features like **concurrent seat locking**, **real-time UI updates**, and **theatre-wise show grouping** – inspired by platforms like **BookMyShow**.
+## 📌 Overview
 
-> ✅ Perfect for beginners and intermediate developers looking to create a real-world, scalable, and beautifully designed full-stack project.
+BookMyScreen allows users to browse movies, explore available shows, select seats, and book movie tickets. The project focuses on backend integration, seat availability, and preventing multiple users from reserving the same seat simultaneously.
 
----
+## ✨ Features
 
-## ⚠️ Important Note (Must Read Before Using Code)
-
-> 🚫 **Please do NOT blindly copy-paste the code from this project.**
-
-This is a **complex, real-world full-stack system** involving:
-- Concurrent seat booking logic  
-- Real-time updates  
-- Backend + frontend integration  
-- Structured architecture  
-
-👉 If you directly copy the code, you may face:
-- ❌ Errors during setup  
-- ❌ Confusion in understanding flow  
-- ❌ Issues in execution and debugging  
-
----
-
-### ✅ Recommended Approach
-
-✔ Follow the **YouTube tutorial step-by-step** on **Programming with Amrit**  
-✔ Understand each module (Auth, Show, Booking, Seat Locking, etc.)  
-✔ Then implement the code alongside the tutorial  
-
----
-
-### 💡 Why this matters?
-
-This project is designed to help you:
-- Think like a real developer 🧠  
-- Understand system design + architecture  
-- Learn how real booking systems work  
-
-👉 Following the tutorial will ensure **smooth execution + deep understanding**
-
----
-
-## 📺 Watch the Full Playlist:
-👉 [YouTube Playlist](https://www.youtube.com/playlist?list=PL9OdiypqS7NlD84nIN-rAh9D-LtzNi10R)
-
-
-
-## 📋 Flow Chart for Project Structure:
-🔗 [View Flowchart on Eraser](https://app.eraser.io/workspace/kVaH7d9rIdoOgqli1DRR?origin=share)
-
----
-
-## 🚀 Features Covered:
-
-- 🎭 **Theatre & Show Management**
-- 🎟️ **Movie Listings with Metadata**
-- 🪑 **Dynamic Seat Layouts with Real-Time Status**
-- 🧾 **Booking with Payment Simulation**
-- 🧮 **Concurrency Handling for Seat Booking**
-- 🗺️ **Grouped Showtimes by Location & Theatre**
-- 🔐 **Auth & Role-Based Access (Admin/Customer)**
-- ⚙️ **Clean Architecture**  
-  (Services, Controllers, Routes, Validations)
-- 📦 **MongoDB + Mongoose Models**
-- 💬 **Toast & Modal Feedback UI**
-
----
+- 🎥 Browse movies and available shows
+- 💺 Select seats for a show
+- 🎟️ Book movie tickets
+- 🔐 Authentication and authorization
+- ⚡ Redis-based temporary seat locking
+- ⏳ Automatic lock expiration using TTL
+- 🗄️ MongoDB for persistent application data
+- 🔄 REST APIs built with Node.js and Express
+- 🐳 Docker Compose configuration
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS, Redux Toolkit
-- **Backend:** Node.js, Express.js, TypeScript
-- **Database:** MongoDB, Mongoose
-- **Deployment:** Render / Vercel *(Optional)*
+| Technology | Purpose |
+|---|---|
+| React | Frontend user interface |
+| Node.js | Backend runtime |
+| Express.js | REST API development |
+| MongoDB | Persistent data storage |
+| Redis | Temporary seat locks |
+| TypeScript | Backend development |
+| Docker Compose | Container orchestration |
 
----
+## 🏗️ Project Structure
 
-## 🙌 Stay Connected
+```text
+bookMyScreen-master/
+├── bms-frontend/       # React frontend
+├── bms-backend/        # Backend API
+├── docker-compose.yml  # Docker configuration
+├── README.md
+└── .gitignore
+```
 
-- 🔔 **Subscribe on YouTube:** Programming with Amrit
-- 💼 **LinkedIn:** [rajamrit15](https://www.linkedin.com/in/rajamrit15/)
-- 🧑‍💻 **GitHub:** [amritmaurya1504](https://github.com/amritmaurya1504)
+## ⚙️ Getting Started
 
----
+### Prerequisites
 
-## 🏷️ Tags
+Install the following before running the project:
 
-`#mernproject` `#moviebooking` `#bookmyshowclone` `#reactjs` `#nodejs`  
-`#mongodb` `#webdevelopment` `#seatbooking` `#techprojects` `#fullstackproject`
+- Node.js and npm
+- MongoDB
+- Redis
+- Git
 
----
+Docker can also be used if the provided Docker Compose configuration supports your local setup.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/amit892974/MOVIE_TICKET_BOOKING.git
+cd MOVIE_TICKET_BOOKING
+```
+
+### 2. Configure environment variables
+
+Check the backend and frontend directories for `.env.example` files. Create the required local `.env` files and configure the necessary values.
+
+Never commit actual passwords, database credentials, JWT secrets, or API keys to GitHub.
+
+### 3. Install dependencies
+
+Backend:
+
+```bash
+cd bms-backend
+npm install
+```
+
+Frontend, in a separate terminal:
+
+```bash
+cd bms-frontend
+npm install
+```
+
+### 4. Start the application
+
+Check each directory's `package.json` for the available scripts before starting the services.
+
+For example, if the backend provides a `dev` script:
+
+```bash
+cd bms-backend
+npm run dev
+```
+
+Start the frontend using the script defined in its `package.json`.
+
+Ensure MongoDB and Redis are running and the environment variables are configured correctly.
+
+## 🔒 Concurrency Handling with Redis
+
+One of the key technical challenges in a ticket booking system is preventing two users from booking the same seat simultaneously.
+
+This project uses Redis for temporary seat locking:
+
+1. Construct a unique lock key using the show ID and seat ID.
+2. Use Redis `SET` with the `NX` option to acquire the lock only if it does not already exist.
+3. Apply a time-to-live (TTL) so abandoned locks can expire.
+4. Verify the lock and booking state before persisting the confirmed booking in MongoDB.
+
+This approach helps coordinate concurrent booking requests. The final booking operation must also validate seat availability and enforce appropriate database constraints or transactions to prevent duplicate bookings.
+
+## 🚧 Future Improvements
+
+- Online payment integration
+- Booking history and cancellation
+- Improved automated testing
+- Deployment with production monitoring
+- Enhanced seat availability updates
+- More robust booking expiration and recovery
+
+## 👨‍💻 Author
+
+**Amit Thakur**
+
+MCA Student | National Institute of Technology, Kurukshetra
+
+GitHub: [amit892974](https://github.com/amit892974)
+
+## 📄 License
+
+No license has been specified yet. All rights are reserved by default unless a license is added to the repository.

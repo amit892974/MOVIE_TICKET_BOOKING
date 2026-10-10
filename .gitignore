@@ -11,8 +11,11 @@ dist/
 build/
 
 # Logs
+logs/
 *.log
 
 # OS files
 .DS_Store
+
+# Local database notes
 MONGO.txt
